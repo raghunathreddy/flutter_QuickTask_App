@@ -1,40 +1,26 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 
-class TaskListScreen extends StatefulWidget {
-  @override
-  _TaskListScreenState createState() => _TaskListScreenState();
-}
+import '../models/Tasks.dart';
+import '../models/task.dart';
+import 'add_task_screen.dart';
+import 'manage_tasks_screen.dart';
 
-class _TaskListScreenState extends State<TaskListScreen> {
-  List<ParseObject> tasks = [];
-
-  @override
-  void initState() {
-    super.initState();
-    _fetchTasks();
-  }
-
-  Future<void> _fetchTasks() async {
-    final query = QueryBuilder<ParseObject>(ParseObject('Tasks'))
-      ..orderByDescending('createdAt'); // You can change the sort order as needed
-
-    final response = await query.query();
-
-    if (response.success) {
-      setState(() {
-        tasks = response.results as List<ParseObject>;
-      });
-    } else {
-      // Handle error
-      print('Error fetching tasks: ${response.error?.message}');
-    }
-  }
+class TaskListScreen extends StatelessWidget {
+/*  // Example list of tasks
+  final List<Tasks> tasks = [
+    Tasks(taskId: 1, taskTitle: "Implement User Authentication", taskStatus: "Completed", taskDueDate: "2024-11-30"),
+    Tasks(taskId: 2, taskTitle: "Fix Bug in Login Page", taskStatus: "Pending", taskDueDate: "2024-12-05"),
+    Tasks(taskId: 3, taskTitle: "Write Unit Tests for API Endpoints", taskStatus: "In Progress", taskDueDate: "2024-12-10"),
+    Tasks(taskId: 4, taskTitle: "Refactor Legacy Code in Authentication", taskStatus: "Pending", taskDueDate: "2024-02-10"),
+    Tasks(taskId: 5, taskTitle: "Code Review for Feature X", taskStatus: "In Progress", taskDueDate: "2024-11-11"),
+    Tasks(taskId: 6, taskTitle: "Set up CI/CD Pipeline", taskStatus: "Completed", taskDueDate: "2024-01-01"),
+  ];*/
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Home'), automaticallyImplyLeading: false),
+      appBar: AppBar(title: Text('Home'),automaticallyImplyLeading: false,),
       body: Column(
         children: [
           // Task list
@@ -61,10 +47,9 @@ class _TaskListScreenState extends State<TaskListScreen> {
                     );
                   },
                   child: Text('Add Task'),
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    backgroundColor: Colors.purple,
-                  ),
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.white, backgroundColor: Colors.purple, // White text color
+                    )
                 ),
                 SizedBox(height: 10),
                 ElevatedButton(
@@ -76,8 +61,7 @@ class _TaskListScreenState extends State<TaskListScreen> {
                   },
                   child: Text('Manage Task'),
                   style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    backgroundColor: Colors.purple,
+                    foregroundColor: Colors.white, backgroundColor: Colors.purple, // White text color
                   ),
                 ),
               ],
@@ -89,17 +73,13 @@ class _TaskListScreenState extends State<TaskListScreen> {
   }
 }
 
+
 class ElevatedCard extends StatelessWidget {
-  final ParseObject task;
+  final Tasks task;
   const ElevatedCard({required this.task});
 
   @override
   Widget build(BuildContext context) {
-    // Assuming the task has fields "taskTitle", "taskStatus", and "taskDueDate"
-    String taskTitle = task.get<String>('taskTitle') ?? 'No Title';
-    String taskStatus = task.get<String>('taskStatus') ?? 'No Status';
-    String taskDueDate = task.get<String>('taskDueDate') ?? 'No Due Date';
-
     return Card(
       elevation: 4,
       margin: EdgeInsets.all(8),
@@ -111,22 +91,18 @@ class ElevatedCard extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(taskTitle, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black)),
+                Text(task.taskTitle, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black)),
                 SizedBox(height: 5),
-                Text(taskDueDate, style: TextStyle(color: Colors.grey)),
+                Text(task.taskDueDate, style: TextStyle(color: Colors.grey)),
               ],
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(
-                  taskStatus,
+                  task.taskStatus,
                   style: TextStyle(
-                    color: taskStatus == "Completed"
-                        ? Colors.green
-                        : taskStatus == "In Progress"
-                        ? Colors.orange
-                        : Colors.red,
+                    color: task.taskStatus == "Completed" ? Colors.green : task.taskStatus == "In Progress" ? Colors.orange : Colors.red,
                   ),
                 ),
               ],

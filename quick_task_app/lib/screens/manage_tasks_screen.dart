@@ -9,8 +9,8 @@ class ManageTasksScreen extends StatefulWidget {
 
 class _ManageTasksScreenState extends State<ManageTasksScreen> {
   List<Task> tasks = [
-    Task(taskId: '1', taskTitle: 'Task 1', taskStatus: false),
-    Task(taskId: '2', taskTitle: 'Task 2', taskStatus: true),
+    Task(taskId: '12', taskTitle: 'Implement User Authentication', taskStatus: false),
+    Task(taskId: '24', taskTitle: 'test', taskStatus: true),
   ];
 
   @override
@@ -23,7 +23,7 @@ class _ManageTasksScreenState extends State<ManageTasksScreen> {
           final task = tasks[index];
           return ListTile(
             title: Text(task.taskTitle),
-            subtitle: Text('Due: ${task.taskId}'),
+            subtitle: Text('Task ID: ${task.taskId}'),
             trailing: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
