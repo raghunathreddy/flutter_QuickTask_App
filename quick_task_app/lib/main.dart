@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-//import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
+import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 import 'screens/signin_screen.dart';
 
 void main() async {
